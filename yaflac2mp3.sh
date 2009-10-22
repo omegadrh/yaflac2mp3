@@ -17,6 +17,8 @@
 #       http://github.com/
 # WebPage:
 #       https://github.com/tacvbo/yaflac2mp3/tree
+# Version:
+#       20091022-omegadrh
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. YOU USE AT YOUR OWN RISK. THE AUTHOR
@@ -38,7 +40,7 @@ usage()
     cat<<EOF
 
 Usage: $0 [-l <lame>] [-f <flac>] [-x <lame_opts>]
-          [-s <source>] [-d <dest>] [-o] [-i]
+          [-s <source>] [-d <dest>] [-o] [-i] [-2] [-320]
 Usage: $0 -h
 
 Default options:
@@ -91,6 +93,12 @@ while getopts l:f:x:d:s:hio name; do
             ;;
         ?)
             usage 1
+            ;;
+        2)
+            LAME_OPTS="-V2 --vbr-new"
+            ;;
+        320)
+            LAME_OPTS="$--cbr -b 320"
             ;;
     esac
 done
