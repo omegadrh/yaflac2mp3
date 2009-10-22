@@ -18,7 +18,7 @@
 # WebPage:
 #       https://github.com/tacvbo/yaflac2mp3/tree
 # Version:
-#       20091022-omegadrh
+#       20091022-omegadrh-1601
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. YOU USE AT YOUR OWN RISK. THE AUTHOR
@@ -61,7 +61,7 @@ EOF
     exit ${EXIT}
 }
 
-while getopts l:f:x:d:s:hio name; do
+while getopts l:f:x:d:s:hio23: name; do
 
     case "${name}" in
         l)
@@ -88,17 +88,17 @@ while getopts l:f:x:d:s:hio name; do
                 echo -e "Requested id3v2 but not found.  Only using lame.\n\n"
             fi
             ;;
+        2)
+            LAME_OPTS="-V2 --vbr-new"
+            ;;
+        3)
+            LAME_OPTS="-b 320 --cbr"
+            ;;
         h)
             usage 0
             ;;
         ?)
             usage 1
-            ;;
-        2)
-            LAME_OPTS="-V2 --vbr-new"
-            ;;
-        320)
-            LAME_OPTS="$--cbr -b 320"
             ;;
     esac
 done
@@ -117,7 +117,7 @@ files=( `find "${SOURCE}" \( -type f -o -type l \) -a -iname '*.flac'` )
 for N_files in ${!files[@]}
   do
     dst_file="${DEST}/${files[${N_files}]/%\.flac/.mp3}"
-    [[ -e "$dst_file" ]] && [[ -z $OVRWRT ]] && continue
+    [[ -e "$dst_file" ]] && [[ -z $OVRWRT ]] && echo "WARNING: File $dst_file exists; skipping" && continue
     vars=( `metaflac --no-utf8-convert --export-tags-to=- "${files[${N_files}]}"` )
 
     for N_vars in ${!vars[@]}
