@@ -18,7 +18,7 @@
 # WebPage:
 #       https://github.com/tacvbo/yaflac2mp3/tree
 # Version:
-#       20091022-omegadrh-1601
+#       20091022-omegadrh-2020
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. YOU USE AT YOUR OWN RISK. THE AUTHOR
@@ -92,6 +92,7 @@ while getopts l:f:x:d:s:hio23: name; do
             LAME_OPTS="-V2 --vbr-new"
             ;;
         3)
+            #yes, this is technically wrong, since it doesn't enforce $OPTARG=20; whatever
             LAME_OPTS="-b 320 --cbr"
             ;;
         h)
@@ -108,6 +109,8 @@ if [[ ! -d "${DEST}" ]]; then
   [[ "$?" != "0" ]] && exit 2
 fi
 [[ ! -d "${SOURCE}" ]] && echo "\"${SOURCE}\" is not a directory" && usage 1
+
+echo "LAME_OPTS=\"$LAME_OPTS\""
 
 old_IFS=${IFS}
 IFS='
